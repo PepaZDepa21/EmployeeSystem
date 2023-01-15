@@ -1,0 +1,95 @@
+﻿<Window x:Class="EmployeeSystem.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EmployeeSystem"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1.5*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="1.5*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="15"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="15"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="15"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="15"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="15"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Label Grid.Row="1" Grid.Column="1" Content="Firstname: "/>
+        <Label Grid.Row="3" Grid.Column="1" Content="Lastname: "/>
+        <Label Grid.Row="5" Grid.Column="1" Content="Dirthdate: "/>
+        <Label Grid.Row="7" Grid.Column="1" Content="Education: "/>
+        <Label Grid.Row="9" Grid.Column="1" Content="Position: "/>
+        <Label Grid.Row="11" Grid.Column="1" Content="Gross salary: "/>
+        <Button Grid.Row="13" Grid.Column="1" Content="Save" Click="BtnSaveClick"/>
+        <Button Grid.Row="13" Grid.Column="3" Content="Clear" Click="BtnClearClick"/>
+        <TextBox x:Name="tbFn" Grid.Row="1" Grid.Column="3" Text="{Binding Firstname, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox x:Name="tbLn" Grid.Row="3" Grid.Column="3" Text="{Binding Lastname, UpdateSourceTrigger=PropertyChanged}"/>
+        <DatePicker Name="dpBd" Grid.Row="5" Grid.Column="3" Text="{Binding Birthdate, UpdateSourceTrigger=PropertyChanged}"/>
+        <ComboBox Name="cbEd" Grid.Row="7" Grid.Column="3" Text="{Binding Education, UpdateSourceTrigger=PropertyChanged}">
+            <ComboBoxItem >ZŠ</ComboBoxItem>
+            <ComboBoxItem>Učňák</ComboBoxItem>
+            <ComboBoxItem>SŠ</ComboBoxItem>
+            <ComboBoxItem>Bc.</ComboBoxItem>
+            <ComboBoxItem>BcA.</ComboBoxItem>
+            <ComboBoxItem>Ing.</ComboBoxItem>
+            <ComboBoxItem>Ing. arch.</ComboBoxItem>
+            <ComboBoxItem>MUDr.</ComboBoxItem>
+            <ComboBoxItem>MDDr.</ComboBoxItem>
+            <ComboBoxItem>MVDr.</ComboBoxItem>
+            <ComboBoxItem>MgA.</ComboBoxItem>
+            <ComboBoxItem>Mgr.</ComboBoxItem>
+            <ComboBoxItem>JUDr.</ComboBoxItem>
+            <ComboBoxItem>PhDr.</ComboBoxItem>
+            <ComboBoxItem>RNDr.</ComboBoxItem>
+            <ComboBoxItem>PharmDr..</ComboBoxItem>
+            <ComboBoxItem>ThLic.</ComboBoxItem>
+            <ComboBoxItem>ThDr.</ComboBoxItem>
+            <ComboBoxItem>akad. arch.</ComboBoxItem>
+            <ComboBoxItem>ak. mal.</ComboBoxItem>
+            <ComboBoxItem>ak. soch.</ComboBoxItem>
+            <ComboBoxItem>MSDr.</ComboBoxItem>
+            <ComboBoxItem>PaedDr.</ComboBoxItem>
+            <ComboBoxItem>PhMr.</ComboBoxItem>
+            <ComboBoxItem>RCDr.</ComboBoxItem>
+            <ComboBoxItem>RSDr.</ComboBoxItem>
+            <ComboBoxItem>RTDr.</ComboBoxItem>
+            <ComboBoxItem>ThMgr.</ComboBoxItem>
+            <ComboBoxItem>Ph.D.</ComboBoxItem>
+            <ComboBoxItem>DSc.</ComboBoxItem>
+            <ComboBoxItem>CSc.</ComboBoxItem>
+            <ComboBoxItem>Dr.</ComboBoxItem>
+            <ComboBoxItem>DrSc.</ComboBoxItem>
+            <ComboBoxItem>Th.D.</ComboBoxItem>
+            <ComboBoxItem>as.</ComboBoxItem>
+            <ComboBoxItem>odb. as.</ComboBoxItem>
+            <ComboBoxItem>doc.</ComboBoxItem>
+            <ComboBoxItem>prof.</ComboBoxItem>
+        </ComboBox>
+        <TextBox Name="tbPo" Grid.Row="9" Grid.Column="3" Text="{Binding Position, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox Name="tbGs" Grid.Row="11" Grid.Column="3" Text="{Binding GrossSalary, UpdateSourceTrigger=PropertyChanged}"/>
+        <Label Name="Fn" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Red"/>
+        <Label Name="Ln" Grid.Row="3" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Label Name="Bd" Grid.Row="5" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Label Name="Ed" Grid.Row="7" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Label Name="Po" Grid.Row="9" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Label Name="Gs" Grid.Row="11" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+    </Grid>
+</Window>
