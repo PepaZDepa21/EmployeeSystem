@@ -16,6 +16,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Text.RegularExpressions;
+using System.Security.Permissions;
+using System.Net.Http.Json;
+using System.Text.Json.Serialization;
 
 namespace EmployeeSystem
 {
@@ -24,58 +27,123 @@ namespace EmployeeSystem
     /// </summary>
     public partial class MainWindow : Window
     {
-        Employee emp;
+        Employee emp = new Employee() { Birthdate = DateTime.Now };
         public MainWindow()
         {
-            emp= new Employee() { Birthdate = DateTime.Now};
             InitializeComponent();
             DataContext = emp;
+            //Employee.GetEmployeesForFile();
         }
 
         private void BtnSaveClick(object sender, RoutedEventArgs e)
         {
-            string path = @".\Employees.txt";
-            string textToAppend = JsonSerializer.Serialize(emp);
-
-            //https://stackoverflow.com/questions/9092160/check-if-a-folder-exist-in-a-directory-and-create-them-using-c-sharp
-            if (File.Exists(path))
+            if (emp.IsOk())
             {
-                //https://stackoverflow.com/questions/2837020/open-existing-file-append-a-single-line
-                using (StreamWriter sw = File.AppendText(path))
+                Employee temp = Employee.AllEmployees.Find(em => em.ID == emp.ID);
+                int empIndex = Employee.AllEmployees.IndexOf(temp);
+
+                if (temp != null)
                 {
-                    sw.WriteLine(textToAppend);
-                    sw.Flush();
+                    Employee.AllEmployees[empIndex] = Employee.CopyEmployee(emp);
                 }
+                else
+                {
+                    Employee.AllEmployees.Add(Employee.CopyEmployee(emp));
+                    emp.Clear();
+                }
+
+                Employee.WriteAllEmployeesToFile();
+
+                UpdateListView();
             }
             else
             {
-                using (StreamWriter sw = new StreamWriter(path))
-                {
-                    sw.WriteLine(textToAppend);
-                    sw.Flush();
-                }
+                MessageBox.Show("Some values are inappropriate!!!");
             }
-            MessageBox.Show(emp.ToString());
-            emp.Clear();
         }
 
         private void BtnClearClick(object sender, RoutedEventArgs e)
         {
             emp.Clear();
         }
+
+        private void BtnEditEmployeeClick(object sender, RoutedEventArgs e)
+        {
+            emp.Firstname = (((Button) sender).DataContext as Employee).Firstname;
+            emp.Lastname = (((Button) sender).DataContext as Employee).Lastname;
+            emp.Birthdate = (((Button) sender).DataContext as Employee).Birthdate;
+            emp.Education = (((Button)sender).DataContext as Employee).Education;
+            emp.Position = (((Button)sender).DataContext as Employee).Position;
+            emp.GrossSalary = (((Button)sender).DataContext as Employee).GrossSalary;
+        }
+
+        private void BtnDeleteEmployeeClick(object sender, RoutedEventArgs e)
+        {
+            Employee em = ((Button)sender).DataContext as Employee;
+            Employee.AllEmployees.Remove(em);
+
+            UpdateListView();
+        }
+
+        public void UpdateListView()
+        {
+            lvEmps.ItemsSource = null;
+            lvEmps.ItemsSource = Employee.AllEmployees;
+        }
     }
 
     class Person : INotifyPropertyChanged
     {
         private string? firstname, lastname;
-        private DateTime? birthdate;
+        private DateTime birthdate;
+        protected Regex name = new Regex("^([A-ZŠČŘŽÝÁÍÉÓÚŮĎŤŇ]{1}([a-zěščřžýáíéóúůďťň]{1,9})?)([- ']{1}[A-ZŠČŘŽÝÁÍÉÓÚŮĎŤŇ]{1}[a-zěščřžýáíéóúůďťň']{3,9})?$");
+
+        private string firstnameError, lastnameError, birthdateError;
+
+        [JsonIgnore]
+        public string FirstnameError
+        {
+            get { return firstnameError; }
+            set { firstnameError = value; }
+        }
+        [JsonIgnore]
+        public string LastnameError 
+        { 
+            get { return lastnameError; }
+            set { lastnameError = value; }
+        }
+        [JsonIgnore]
+        public string BirthdateError
+        {
+            get { return birthdateError; }
+            set { birthdateError = value; }
+        }
 
         public string? Firstname {
-            get { return firstname; }
+            get
+            {
+                //if (firstname == null)
+                //{
+                //    return "";
+                //}
+                return firstname;
+            }
             set
             {
-                firstname = value;
-                OnPropertyChanged("Firstname");
+                if (value == null || name.IsMatch(value))
+                {
+                    firstname = value;
+                    FirstnameError = string.Empty;
+                    OnPropertyChanged("Firstname");
+                    OnPropertyChanged("FirstnameError");
+                    OnPropertyChanged("Status");
+                }
+                else {
+                    firstname = value;
+                    FirstnameError = "Firstname doesn't match pattern!!!";
+                    OnPropertyChanged("FirstnameError");
+                    OnPropertyChanged("Status");
+                }
             }
         }
 
@@ -84,24 +152,61 @@ namespace EmployeeSystem
             get { return lastname; }
             set
             {
-                lastname = value;
-                OnPropertyChanged("Lastname");
+                if (value == null || name.IsMatch(value))
+                {
+                    lastname = value;
+                    LastnameError = string.Empty;
+                    OnPropertyChanged("Lastname");
+                    OnPropertyChanged("LastnameError");
+                    OnPropertyChanged("Status");
+                }
+                else
+                {
+                    lastname = value;
+                    LastnameError = "Lastname doesn't match pattern!!!";
+                    OnPropertyChanged("LastnameError");
+                    OnPropertyChanged("Status");
+                }
             }
         }
 
-        public DateTime? Birthdate
+        public DateTime Birthdate
         {
             get { return birthdate; }
             set
             {
                 birthdate = value;
-                OnPropertyChanged("Birthdate");
+                if (CheckAge(value) || EnteredBirthdate())
+                {
+                    BirthdateError = string.Empty;
+                    OnPropertyChanged("Birthdate");
+                    OnPropertyChanged("BirthdateError");
+                    OnPropertyChanged("Status");
+                }
+                else
+                {
+                    BirthdateError = "Person is too young for the job!!!";
+                    OnPropertyChanged("BirthdateError");
+                    OnPropertyChanged("Status");
+                }
             }
         }
 
+        public bool CheckAge(DateTime bd)
+        {
+            DateTime dt = DateTime.Now;
+            return dt.Year - bd.Year > 15 || (dt.Year - bd.Year == 15 && dt.DayOfYear >= bd.DayOfYear);
+        }
+
+        public bool EnteredBirthdate()
+        {
+            DateTime dt = DateTime.Now;
+            return dt.Year == Birthdate.Year && dt.DayOfYear == Birthdate.DayOfYear;
+        } 
+
         public override string ToString()
         {
-            return $"{Firstname} {Lastname} {Birthdate}";
+            return $"{{\"Firstname\":{Firstname},\"Lastname\":{Lastname},\"Birthdate\":{Birthdate}}}";
         }
 
         public void OnPropertyChanged(string property)
@@ -115,15 +220,56 @@ namespace EmployeeSystem
     {
         private string? education { get; set; }
         private string? position { get; set; }
-        private decimal? grossSalary { get; set; }
-        
+        private decimal grossSalary { get; set; }
+
+        [JsonIgnore]
+        public Guid ID { get; set; }
+
+        [JsonIgnore]
+        public static List<Employee> AllEmployees { get; set; } = new List<Employee>();
+
+        private string educationError, positionError, grossSalaryError;
+
+        [JsonIgnore]
+        public string EducationError
+        {
+            get { return educationError; }
+            set { educationError = value; }
+        }
+
+        [JsonIgnore]
+        public string PositionError
+        {
+            get { return positionError; }
+            set { positionError = value; }
+        }
+
+        [JsonIgnore]
+        public string GrossSalaryError
+        {
+            get { return grossSalaryError; }
+            set { grossSalaryError = value; }
+        }
+
         public string? Education
         {
             get { return education; }
             set
             {
-                education = value;
-                OnPropertyChanged("Education");
+                if (Education != "" || Education == null)
+                {
+                    education = value;
+                    EducationError = string.Empty;
+                    OnPropertyChanged("Education");
+                    OnPropertyChanged("EducationError");
+                    OnPropertyChanged("Status");
+                }
+                else
+                {
+                    EducationError = "Unknown or empty education!!!";
+                    OnPropertyChanged("EducationError");
+                    OnPropertyChanged("Status");
+                }
             }
         }
 
@@ -132,33 +278,145 @@ namespace EmployeeSystem
             get { return position; }
             set
             {
-                position = value;
-                OnPropertyChanged("Position");
+                if (Position != "" || Position == null)
+                {
+                    position = value;
+                    PositionError = string.Empty;
+                    OnPropertyChanged("Position");
+                    OnPropertyChanged("PositionError");
+                    OnPropertyChanged("Status");
+                }
+                else
+                {
+                    PositionError = "Position not entered or unknown posiotion!!!";
+                    OnPropertyChanged("PositionError");
+                    OnPropertyChanged("Status");
+                }
             }
         }
 
-        public decimal? GrossSalary
+        public decimal GrossSalary
         {
             get { return grossSalary; }
             set
             {
-                grossSalary = value;
-                OnPropertyChanged("GrossSalary");
+                if ((decimal) value >= (decimal) 17300)
+                {
+                    grossSalary = value;
+                    GrossSalaryError = string.Empty;
+                    OnPropertyChanged("GrossSalary");
+                    OnPropertyChanged("GrossSalaryError");
+                    OnPropertyChanged("Status");
+                }
+                else if (value == 0)
+                {
+                    grossSalary = 0;
+                    GrossSalaryError = string.Empty;
+                    OnPropertyChanged("GrossSalary");
+                    OnPropertyChanged("GrossSalaryError");
+                    OnPropertyChanged("Status");
+                }
+                else
+                {
+                    grossSalary = value;
+                    GrossSalaryError = "Salary doesn't match minimal wage";
+                    OnPropertyChanged("GrossSalaryError");
+                    OnPropertyChanged("Status");
+                }
             }
+        }
+
+        [JsonIgnore]
+        public string Status
+        {
+            get => this.ToString();
+        }
+
+        public bool IsOk()
+        {
+            bool fn;
+            bool ln;
+            if (Firstname == null)
+            {
+                fn = true;
+            }
+            else
+            {
+                fn = name.IsMatch(Firstname);
+            }
+            if (Lastname == null)
+            {
+                ln = false;
+            }
+            else
+            {
+                ln = name.IsMatch(Lastname);
+            }
+            bool bd = CheckAge(Birthdate) || EnteredBirthdate();
+            bool po = Position != null && Position != "";
+            bool gs = GrossSalary >= (decimal) 17300;
+            return fn && ln && bd && po && gs;
         }
 
         public override string ToString()
         {
-            return $"{Firstname} {Lastname} {Birthdate} {Education} {Position} {GrossSalary}";
+            if (!EnteredBirthdate())
+            {
+                return $"{{\"Firstname\":\"{Firstname}\",\"Lastname\":\"{Lastname}\",\"Birthdate\":{Birthdate},\"Education\":\"{Education}\",\"Position\":\"{Position}\",\"GrossSalary\":{GrossSalary}}}";
+            }
+            return $"{{\"Firstname\":\"{Firstname}\",\"Lastname\":\"{Lastname}\",\"Birthdate\":,\"Education\":\"{Education}\",\"Position\":\"{Position}\",\"GrossSalary\":{GrossSalary}}}";
+        }
+
+        public static void WriteAllEmployeesToFile()
+        {
+            string path = @".\Employees.txt";
+            using (StreamWriter sw = new StreamWriter(path))
+            {
+                foreach (var item in AllEmployees)
+                {
+                    sw.WriteLine(SerializeClassToJSON(item));
+                }
+                sw.Flush();
+            }
+        }
+
+        public static void GetEmployeesForFile()
+        {
+            string path = @".\Employees.txt";
+            using (StreamReader sr = new StreamReader(path))
+            {
+                while (true)
+                {
+                    string line = sr.ReadLine();
+                    if (line == null) { break; }
+                    var emp = JsonSerializer.Deserialize<Employee>(sr.ReadLine());
+                    AllEmployees.Add(emp);
+                }
+            }
+        }
+
+        public static string SerializeClassToJSON(Employee employee) => JsonSerializer.Serialize(employee);
+
+        public static Employee CopyEmployee(Employee empl) 
+        {
+            Employee em = new Employee();
+            em.Firstname = empl.Firstname;
+            em.Lastname = empl.Lastname;
+            em.Birthdate = empl.Birthdate;
+            em.Education = empl.Education;
+            em.Position = empl.Position;
+            em.GrossSalary = empl.GrossSalary;
+            em.ID = Guid.NewGuid();
+            return em;
         }
 
         public void Clear()
         {
-            Firstname = string.Empty;
-            Lastname = string.Empty;
+            Firstname = null;
+            Lastname = null;
             Birthdate = DateTime.Now;
-            Education = string.Empty;
-            Position = string.Empty;
+            Education = null;
+            Position = null;
             GrossSalary = 0;
         }
     }

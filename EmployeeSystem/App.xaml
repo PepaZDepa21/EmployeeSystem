@@ -4,6 +4,37 @@
              xmlns:local="clr-namespace:EmployeeSystem"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <Brush x:Key="BackgroudColor">#0000</Brush>
+            <Brush x:Key="TextColor">#272643</Brush>
+            <Brush x:Key="ButtonColor">#e3f6f5</Brush>
+            <Brush x:Key="TextBoxColor">#bae8e8</Brush>
+            <Brush x:Key="BorderColor">#2c698d</Brush>
+            <Style x:Key="Buttons" TargetType="Button">
+                <Setter Property="Background" Value="{StaticResource ButtonColor}"/>
+                <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+                <Setter Property="ItemsControl.BorderBrush" Value="{StaticResource BorderColor}"/>
+            </Style>
+            <Style x:Key="TextBoxEntry" TargetType="TextBox">
+                <Setter Property="Background" Value="{StaticResource TextBoxColor}"/>
+                <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+                <Setter Property="ItemsControl.BorderBrush" Value="{StaticResource BorderColor}"/>
+            </Style>
+            <Style x:Key="DatePickerEntry" TargetType="DatePicker">
+                <Setter Property="Background" Value="{StaticResource TextBoxColor}"/>
+                <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+                <Setter Property="ItemsControl.BorderBrush" Value="{StaticResource BorderColor}"/>
+            </Style>
+            <Style x:Key="ComboBoxEntry" TargetType="ComboBox">
+                <Setter Property="Background" Value="{StaticResource TextBoxColor}"/>
+                <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+                <Setter Property="ItemsControl.BorderBrush" Value="{StaticResource BorderColor}"/>
+                
+            </Style>
+            <Style x:Key="ComboBoxItemEntry" TargetType="ComboBoxItem">
+                <Setter Property="Background" Value="{StaticResource TextBoxColor}"/>
+                <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+            </Style>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

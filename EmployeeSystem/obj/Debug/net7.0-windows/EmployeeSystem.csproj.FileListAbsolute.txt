@@ -19,3 +19,4 @@ C:\Data\Dev\C#\School\EmployeeSystem\EmployeeSystem\obj\Debug\net7.0-windows\ref
 C:\Data\Dev\C#\School\EmployeeSystem\EmployeeSystem\obj\Debug\net7.0-windows\EmployeeSystem.pdb
 C:\Data\Dev\C#\School\EmployeeSystem\EmployeeSystem\obj\Debug\net7.0-windows\EmployeeSystem.genruntimeconfig.cache
 C:\Data\Dev\C#\School\EmployeeSystem\EmployeeSystem\obj\Debug\net7.0-windows\ref\EmployeeSystem.dll
+C:\Data\Dev\C#\School\EmployeeSystem\EmployeeSystem\obj\Debug\net7.0-windows\App.baml

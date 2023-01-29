@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EmployeeSystem"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="EmployeeSystem" Height="450" Width="800">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1.5*"/>
@@ -17,79 +17,133 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="1*"/>
-            <RowDefinition Height="15"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="10"/>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="15"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="15"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="15"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="15"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="2*"/>
+            <RowDefinition Height="3*"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
-        <Label Grid.Row="1" Grid.Column="1" Content="Firstname: "/>
-        <Label Grid.Row="3" Grid.Column="1" Content="Lastname: "/>
-        <Label Grid.Row="5" Grid.Column="1" Content="Dirthdate: "/>
-        <Label Grid.Row="7" Grid.Column="1" Content="Education: "/>
-        <Label Grid.Row="9" Grid.Column="1" Content="Position: "/>
-        <Label Grid.Row="11" Grid.Column="1" Content="Gross salary: "/>
-        <Button Grid.Row="13" Grid.Column="1" Content="Save" Click="BtnSaveClick"/>
-        <Button Grid.Row="13" Grid.Column="3" Content="Clear" Click="BtnClearClick"/>
-        <TextBox x:Name="tbFn" Grid.Row="1" Grid.Column="3" Text="{Binding Firstname, UpdateSourceTrigger=PropertyChanged}"/>
-        <TextBox x:Name="tbLn" Grid.Row="3" Grid.Column="3" Text="{Binding Lastname, UpdateSourceTrigger=PropertyChanged}"/>
-        <DatePicker Name="dpBd" Grid.Row="5" Grid.Column="3" Text="{Binding Birthdate, UpdateSourceTrigger=PropertyChanged}"/>
-        <ComboBox Name="cbEd" Grid.Row="7" Grid.Column="3" Text="{Binding Education, UpdateSourceTrigger=PropertyChanged}">
-            <ComboBoxItem >ZŠ</ComboBoxItem>
-            <ComboBoxItem>Učňák</ComboBoxItem>
-            <ComboBoxItem>SŠ</ComboBoxItem>
-            <ComboBoxItem>Bc.</ComboBoxItem>
-            <ComboBoxItem>BcA.</ComboBoxItem>
-            <ComboBoxItem>Ing.</ComboBoxItem>
-            <ComboBoxItem>Ing. arch.</ComboBoxItem>
-            <ComboBoxItem>MUDr.</ComboBoxItem>
-            <ComboBoxItem>MDDr.</ComboBoxItem>
-            <ComboBoxItem>MVDr.</ComboBoxItem>
-            <ComboBoxItem>MgA.</ComboBoxItem>
-            <ComboBoxItem>Mgr.</ComboBoxItem>
-            <ComboBoxItem>JUDr.</ComboBoxItem>
-            <ComboBoxItem>PhDr.</ComboBoxItem>
-            <ComboBoxItem>RNDr.</ComboBoxItem>
-            <ComboBoxItem>PharmDr..</ComboBoxItem>
-            <ComboBoxItem>ThLic.</ComboBoxItem>
-            <ComboBoxItem>ThDr.</ComboBoxItem>
-            <ComboBoxItem>akad. arch.</ComboBoxItem>
-            <ComboBoxItem>ak. mal.</ComboBoxItem>
-            <ComboBoxItem>ak. soch.</ComboBoxItem>
-            <ComboBoxItem>MSDr.</ComboBoxItem>
-            <ComboBoxItem>PaedDr.</ComboBoxItem>
-            <ComboBoxItem>PhMr.</ComboBoxItem>
-            <ComboBoxItem>RCDr.</ComboBoxItem>
-            <ComboBoxItem>RSDr.</ComboBoxItem>
-            <ComboBoxItem>RTDr.</ComboBoxItem>
-            <ComboBoxItem>ThMgr.</ComboBoxItem>
-            <ComboBoxItem>Ph.D.</ComboBoxItem>
-            <ComboBoxItem>DSc.</ComboBoxItem>
-            <ComboBoxItem>CSc.</ComboBoxItem>
-            <ComboBoxItem>Dr.</ComboBoxItem>
-            <ComboBoxItem>DrSc.</ComboBoxItem>
-            <ComboBoxItem>Th.D.</ComboBoxItem>
-            <ComboBoxItem>as.</ComboBoxItem>
-            <ComboBoxItem>odb. as.</ComboBoxItem>
-            <ComboBoxItem>doc.</ComboBoxItem>
-            <ComboBoxItem>prof.</ComboBoxItem>
+        
+        <Label Grid.Row="1" Grid.Column="1" Content="Firstname: " Foreground="{StaticResource TextColor}" FontSize="10"/>
+        <Label Grid.Row="3" Grid.Column="1" Content="Lastname: " Foreground="{StaticResource TextColor}" FontSize="10"/>
+        <Label Grid.Row="5" Grid.Column="1" Content="Birthdate: " Foreground="{StaticResource TextColor}" FontSize="10"/>
+        <Label Grid.Row="7" Grid.Column="1" Content="Education: " Foreground="{StaticResource TextColor}" FontSize="10"/>
+        <Label Grid.Row="9" Grid.Column="1" Content="Position: " Foreground="{StaticResource TextColor}" FontSize="10"/>
+        <Label Grid.Row="11" Grid.Column="1" Content="Gross salary: " Foreground="{StaticResource TextColor}" FontSize="10"/>
+        
+        <Button Grid.Row="14" Grid.Column="1" Content="Save" Click="BtnSaveClick" Style="{StaticResource Buttons}"/>
+        <Button Grid.Row="14" Grid.Column="3" Content="Clear" Click="BtnClearClick" Style="{StaticResource Buttons}"/>
+        
+        <TextBox x:Name="tbFn" Grid.Row="1" Grid.Column="3" Text="{Binding Firstname, UpdateSourceTrigger=LostFocus}" Style="{StaticResource TextBoxEntry}"/>
+        <TextBox x:Name="tbLn" Grid.Row="3" Grid.Column="3" Text="{Binding Lastname, UpdateSourceTrigger=LostFocus}" Style="{StaticResource TextBoxEntry}"/>
+        <DatePicker Name="dpBd" Grid.Row="5" Grid.Column="3" SelectedDate="{Binding Birthdate, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource DatePickerEntry}"/>
+        <ComboBox Name="cbEd" Grid.Row="7" Grid.Column="3" Text="{Binding Education, UpdateSourceTrigger=LostFocus}" Background="{StaticResource TextBoxColor}">
+            <ComboBoxItem Style="{StaticResource ComboBoxItemEntry}">ZŠ</ComboBoxItem>
+            <ComboBoxItem Style="{StaticResource ComboBoxItemEntry}">Učňák</ComboBoxItem>
+            <ComboBoxItem Style="{StaticResource ComboBoxItemEntry}">SŠ</ComboBoxItem>
+            <ComboBoxItem Style="{StaticResource ComboBoxItemEntry}">Bc.</ComboBoxItem>
+            <ComboBoxItem Style="{StaticResource ComboBoxItemEntry}">BcA.</ComboBoxItem>
+            <ComboBoxItem Style="{StaticResource ComboBoxItemEntry}">Ing.</ComboBoxItem>
+            <ComboBoxItem Style="{StaticResource ComboBoxItemEntry}">Ing. arch.</ComboBoxItem>
+            <ComboBoxItem Style="{StaticResource ComboBoxItemEntry}">MUDr.</ComboBoxItem>
+            <ComboBoxItem Style="{StaticResource ComboBoxItemEntry}">MDDr.</ComboBoxItem>
+            <ComboBoxItem Style="{StaticResource ComboBoxItemEntry}">MVDr.</ComboBoxItem>
+            <ComboBoxItem Style="{StaticResource ComboBoxItemEntry}">MgA.</ComboBoxItem>
+            <ComboBoxItem Style="{StaticResource ComboBoxItemEntry}">Mgr.</ComboBoxItem>
+            <ComboBoxItem Style="{StaticResource ComboBoxItemEntry}">JUDr.</ComboBoxItem>
+            <ComboBoxItem Style="{StaticResource ComboBoxItemEntry}">PhDr.</ComboBoxItem>
+            <ComboBoxItem Style="{StaticResource ComboBoxItemEntry}">RNDr.</ComboBoxItem>
+            <ComboBoxItem Style="{StaticResource ComboBoxItemEntry}">PharmDr..</ComboBoxItem>
+            <ComboBoxItem Style="{StaticResource ComboBoxItemEntry}">ThLic.</ComboBoxItem>
+            <ComboBoxItem Style="{StaticResource ComboBoxItemEntry}">ThDr.</ComboBoxItem>
+            <ComboBoxItem Style="{StaticResource ComboBoxItemEntry}">akad. arch.</ComboBoxItem>
+            <ComboBoxItem Style="{StaticResource ComboBoxItemEntry}">ak. mal.</ComboBoxItem>
+            <ComboBoxItem Style="{StaticResource ComboBoxItemEntry}">ak. soch.</ComboBoxItem>
+            <ComboBoxItem Style="{StaticResource ComboBoxItemEntry}">MSDr.</ComboBoxItem>
+            <ComboBoxItem Style="{StaticResource ComboBoxItemEntry}">PaedDr.</ComboBoxItem>
+            <ComboBoxItem Style="{StaticResource ComboBoxItemEntry}">PhMr.</ComboBoxItem>
+            <ComboBoxItem Style="{StaticResource ComboBoxItemEntry}">RCDr.</ComboBoxItem>
+            <ComboBoxItem Style="{StaticResource ComboBoxItemEntry}">RSDr.</ComboBoxItem>
+            <ComboBoxItem Style="{StaticResource ComboBoxItemEntry}">RTDr.</ComboBoxItem>
+            <ComboBoxItem Style="{StaticResource ComboBoxItemEntry}">ThMgr.</ComboBoxItem>
+            <ComboBoxItem Style="{StaticResource ComboBoxItemEntry}">Ph.D.</ComboBoxItem>
+            <ComboBoxItem Style="{StaticResource ComboBoxItemEntry}">DSc.</ComboBoxItem>
+            <ComboBoxItem Style="{StaticResource ComboBoxItemEntry}">CSc.</ComboBoxItem>
+            <ComboBoxItem Style="{StaticResource ComboBoxItemEntry}">Dr.</ComboBoxItem>
+            <ComboBoxItem Style="{StaticResource ComboBoxItemEntry}">DrSc.</ComboBoxItem>
+            <ComboBoxItem Style="{StaticResource ComboBoxItemEntry}">Th.D.</ComboBoxItem>
+            <ComboBoxItem Style="{StaticResource ComboBoxItemEntry}">as.</ComboBoxItem>
+            <ComboBoxItem Style="{StaticResource ComboBoxItemEntry}">odb. as.</ComboBoxItem>
+            <ComboBoxItem Style="{StaticResource ComboBoxItemEntry}">doc.</ComboBoxItem>
+            <ComboBoxItem Style="{StaticResource ComboBoxItemEntry}">prof.</ComboBoxItem>
         </ComboBox>
-        <TextBox Name="tbPo" Grid.Row="9" Grid.Column="3" Text="{Binding Position, UpdateSourceTrigger=PropertyChanged}"/>
-        <TextBox Name="tbGs" Grid.Row="11" Grid.Column="3" Text="{Binding GrossSalary, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox Name="tbPo" Grid.Row="9" Grid.Column="3" Text="{Binding Position, UpdateSourceTrigger=LostFocus}" Style="{StaticResource TextBoxEntry}"/>
+        <TextBox Name="tbGs" Grid.Row="11" Grid.Column="3" Text="{Binding GrossSalary, UpdateSourceTrigger=LostFocus}" Style="{StaticResource TextBoxEntry}"/>
         <Label Name="Fn" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Red"/>
         <Label Name="Ln" Grid.Row="3" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         <Label Name="Bd" Grid.Row="5" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         <Label Name="Ed" Grid.Row="7" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         <Label Name="Po" Grid.Row="9" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         <Label Name="Gs" Grid.Row="11" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        
+        <Label Grid.Row="1" Grid.Column="2" Content="!" Foreground="Lime" FontSize="10" ToolTip="Optional field"/>
+        <Label Grid.Row="3" Grid.Column="2" Content="!" Foreground="Red" FontSize="10" ToolTip="Required field"/>
+        <Label Grid.Row="5" Grid.Column="2" Content="!" Foreground="Lime" FontSize="10" ToolTip="Optional field"/>
+        <Label Grid.Row="7" Grid.Column="2" Content="!" Foreground="Lime" FontSize="10" ToolTip="Optional field"/>
+        <Label Grid.Row="9" Grid.Column="2" Content="!" Foreground="Red" FontSize="10" ToolTip="Required field"/>
+        <Label Grid.Row="11" Grid.Column="2" Content="!" Foreground="Red" FontSize="10" ToolTip="Required field"/>
+        
+        <Label Grid.Row="2" Grid.Column="3" Content="{Binding FirstnameError, Mode=OneWay, UpdateSourceTrigger=LostFocus}" Foreground="Red" FontSize="7"/>
+        <Label Grid.Row="4" Grid.Column="3" Content="{Binding LastnameError, Mode=OneWay, UpdateSourceTrigger=LostFocus}" Foreground="Red" FontSize="7"/>
+        <Label Grid.Row="6" Grid.Column="3" Content="{Binding BirthdateError, Mode=OneWay, UpdateSourceTrigger=LostFocus}" Foreground="Red" FontSize="7"/>
+        <Label Grid.Row="8" Grid.Column="3" Content="{Binding EducationError, Mode=OneWay, UpdateSourceTrigger=LostFocus}" Foreground="Red" FontSize="7"/>
+        <Label Grid.Row="10" Grid.Column="3" Content="{Binding PositionError, Mode=OneWay, UpdateSourceTrigger=LostFocus}" Foreground="Red" FontSize="7"/>
+        <Label Grid.Row="12" Grid.Column="3" Content="{Binding GrossSalaryError, Mode=OneWay, UpdateSourceTrigger=LostFocus}" Foreground="Red" FontSize="7"/>
+        <Label Grid.Row="17" Grid.Column="0" Grid.ColumnSpan="5" HorizontalContentAlignment="Center" Content="{Binding Status}" Background="{StaticResource TextBoxColor}" Foreground="{StaticResource TextColor}" FontSize="10"/>
+
+        <ListView
+            x:Name="lvEmps"
+            Grid.Row="16"
+            Grid.ColumnSpan="5"
+            HorizontalContentAlignment="Stretch"
+            d:ItemsSource="{d:SampleData ItemCount=3}"
+            ItemsSource="{Binding AllEmployees}">
+
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid HorizontalAlignment="Stretch" Height="20">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="80"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" Content="{Binding Firstname}" FontSize="9"/>
+                        <Label Grid.Column="1" Content="{Binding Lastname}" FontSize="9"/>
+                        <Label Grid.Column="2" Content="{Binding Birthdate}" FontSize="9"/>
+                        <Label Grid.Column="3" Content="{Binding Education}" FontSize="9"/>
+                        <Label Grid.Column="4" Content="{Binding Position}" FontSize="9"/>
+                        <Label Grid.Column="5" Content="{Binding GrossSalary}" FontSize="9"/>
+                        <Button x:Name="editEmployee" Grid.Column="6" Content="Edit" FontSize="10" Style="{StaticResource Buttons}" Click="BtnEditEmployeeClick"/>
+                        <Button x:Name="deleteEmployee" Grid.Column="7" Content="Delete" FontSize="10" Style="{StaticResource Buttons}" Click="BtnDeleteEmployeeClick"/>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </Grid>
 </Window>
