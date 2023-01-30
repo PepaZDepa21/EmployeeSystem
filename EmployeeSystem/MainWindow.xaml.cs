@@ -32,7 +32,7 @@ namespace EmployeeSystem
         {
             InitializeComponent();
             DataContext = emp;
-            //Employee.GetEmployeesFromFile();
+            Employee.GetEmployeesFromFile();
         }
 
         private void BtnSaveClick(object sender, RoutedEventArgs e)
@@ -430,7 +430,7 @@ namespace EmployeeSystem
                 {
                     string line = sr.ReadLine();
                     if (line == null) { break; }
-                    var emp = JsonSerializer.Deserialize<Employee>(sr.ReadLine());
+                    var emp = JsonSerializer.Deserialize<Employee>(line);
                     AllEmployees.Add(emp);
                 }
             }
