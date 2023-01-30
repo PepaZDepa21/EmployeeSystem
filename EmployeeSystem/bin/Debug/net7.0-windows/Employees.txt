@@ -1,1 +1,1 @@
-{"Education":null,"Position":"Ing","GrossSalary":74000,"Firstname":null,"Lastname":"Pepa","Birthdate":null}
+{"Education":"Ing.","Position":"Ing","GrossSalary":84000,"Firstname":"Josef","Lastname":"Pepa","Birthdate":"2003-06-03T00:00:00"}

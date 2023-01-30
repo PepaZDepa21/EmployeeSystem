@@ -53,12 +53,10 @@ namespace EmployeeSystem
                         emp.Birthdate = null;
                     }
                     Employee.AllEmployees.Add(Employee.CopyEmployee(emp));
-                    emp.Clear();
                 }
 
-
+                emp.Clear();
                 Employee.WriteAllEmployeesToFile();
-
                 UpdateListView();
             }
             else
@@ -74,13 +72,14 @@ namespace EmployeeSystem
 
         private void BtnEditEmployeeClick(object sender, RoutedEventArgs e)
         {
-            emp.Firstname = (((Button) sender).DataContext as Employee).Firstname;
-            emp.Lastname = (((Button) sender).DataContext as Employee).Lastname;
-            emp.Birthdate = (((Button) sender).DataContext as Employee).Birthdate;
-            emp.Education = (((Button) sender).DataContext as Employee).Education;
-            emp.Position = (((Button) sender).DataContext as Employee).Position;
-            emp.GrossSalary = (((Button) sender).DataContext as Employee).GrossSalary;
-            emp.ID = (((Button) sender).DataContext as Employee).ID;
+            Employee em = (((Button)sender).DataContext as Employee);
+            emp.Firstname = em.Firstname;
+            emp.Lastname = em.Lastname;
+            emp.Birthdate = em.Birthdate;
+            emp.Education = em.Education;
+            emp.Position = em.Position;
+            emp.GrossSalary = em.GrossSalary;
+            emp.ID = em.ID;
         }
 
         private void BtnDeleteEmployeeClick(object sender, RoutedEventArgs e)

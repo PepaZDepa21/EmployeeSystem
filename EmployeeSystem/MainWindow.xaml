@@ -133,12 +133,12 @@
                             <ColumnDefinition Width="80"/>
                             <ColumnDefinition Width="80"/>
                         </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0" Content="{Binding Firstname}" FontSize="9"/>
-                        <Label Grid.Column="1" Content="{Binding Lastname}" FontSize="9"/>
-                        <Label Grid.Column="2" Content="{Binding Birthdate}" FontSize="9"/>
-                        <Label Grid.Column="3" Content="{Binding Education}" FontSize="9"/>
-                        <Label Grid.Column="4" Content="{Binding Position}" FontSize="9"/>
-                        <Label Grid.Column="5" Content="{Binding GrossSalary}" FontSize="9"/>
+                        <Label Grid.Column="0" Content="{Binding Firstname}" FontSize="8"/>
+                        <Label Grid.Column="1" Content="{Binding Lastname}" FontSize="8"/>
+                        <Label Grid.Column="2" Content="{Binding Birthdate}" FontSize="8"/>
+                        <Label Grid.Column="3" Content="{Binding Education}" FontSize="8"/>
+                        <Label Grid.Column="4" Content="{Binding Position}" FontSize="8"/>
+                        <Label Grid.Column="5" Content="{Binding GrossSalary}" FontSize="8"/>
                         <Button x:Name="editEmployee" Grid.Column="6" Content="Edit" FontSize="10" Style="{StaticResource Buttons}" Click="BtnEditEmployeeClick"/>
                         <Button x:Name="deleteEmployee" Grid.Column="7" Content="Delete" FontSize="10" Style="{StaticResource Buttons}" Click="BtnDeleteEmployeeClick"/>
                     </Grid>
