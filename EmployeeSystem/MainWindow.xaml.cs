@@ -32,7 +32,7 @@ namespace EmployeeSystem
         {
             InitializeComponent();
             DataContext = emp;
-            //Employee.GetEmployeesForFile();
+            //Employee.GetEmployeesFromFile();
         }
 
         private void BtnSaveClick(object sender, RoutedEventArgs e)
@@ -48,9 +48,14 @@ namespace EmployeeSystem
                 }
                 else
                 {
+                    if (emp.NotEnteredBirthdate())
+                    {
+                        emp.Birthdate = null;
+                    }
                     Employee.AllEmployees.Add(Employee.CopyEmployee(emp));
                     emp.Clear();
                 }
+
 
                 Employee.WriteAllEmployeesToFile();
 
@@ -72,9 +77,10 @@ namespace EmployeeSystem
             emp.Firstname = (((Button) sender).DataContext as Employee).Firstname;
             emp.Lastname = (((Button) sender).DataContext as Employee).Lastname;
             emp.Birthdate = (((Button) sender).DataContext as Employee).Birthdate;
-            emp.Education = (((Button)sender).DataContext as Employee).Education;
-            emp.Position = (((Button)sender).DataContext as Employee).Position;
-            emp.GrossSalary = (((Button)sender).DataContext as Employee).GrossSalary;
+            emp.Education = (((Button) sender).DataContext as Employee).Education;
+            emp.Position = (((Button) sender).DataContext as Employee).Position;
+            emp.GrossSalary = (((Button) sender).DataContext as Employee).GrossSalary;
+            emp.ID = (((Button) sender).DataContext as Employee).ID;
         }
 
         private void BtnDeleteEmployeeClick(object sender, RoutedEventArgs e)
@@ -95,7 +101,7 @@ namespace EmployeeSystem
     class Person : INotifyPropertyChanged
     {
         private string? firstname, lastname;
-        private DateTime birthdate;
+        private DateTime? birthdate;
         protected Regex name = new Regex("^([A-ZŠČŘŽÝÁÍÉÓÚŮĎŤŇ]{1}([a-zěščřžýáíéóúůďťň]{1,9})?)([- ']{1}[A-ZŠČŘŽÝÁÍÉÓÚŮĎŤŇ]{1}[a-zěščřžýáíéóúůďťň']{3,9})?$");
 
         private string firstnameError, lastnameError, birthdateError;
@@ -170,39 +176,66 @@ namespace EmployeeSystem
             }
         }
 
-        public DateTime Birthdate
+        public DateTime? Birthdate
         {
             get { return birthdate; }
             set
             {
-                birthdate = value;
-                if (CheckAge(value) || EnteredBirthdate())
+                if (value == null)
                 {
-                    BirthdateError = string.Empty;
-                    OnPropertyChanged("Birthdate");
-                    OnPropertyChanged("BirthdateError");
+                    birthdate = value;
                     OnPropertyChanged("Status");
                 }
                 else
                 {
-                    BirthdateError = "Person is too young for the job!!!";
-                    OnPropertyChanged("BirthdateError");
-                    OnPropertyChanged("Status");
+                    birthdate = value;
+                    DateTime db = (DateTime)value;
+                    if (CheckAge() || NotEnteredBirthdate())
+                    {
+                        BirthdateError = string.Empty;
+                        OnPropertyChanged("Birthdate");
+                        OnPropertyChanged("BirthdateError");
+                        OnPropertyChanged("Status");
+                    }
+                    else
+                    {
+                        BirthdateError = "Person is too young for the job!!!";
+                        OnPropertyChanged("BirthdateError");
+                        OnPropertyChanged("Status");
+                    }
                 }
             }
         }
 
-        public bool CheckAge(DateTime bd)
+        public bool CheckAge()
         {
             DateTime dt = DateTime.Now;
+            DateTime bd;
+            if (Birthdate == null)
+            {
+                return true;
+            }
+            else
+            {
+                bd = (DateTime)Birthdate;
+            }
             return dt.Year - bd.Year > 15 || (dt.Year - bd.Year == 15 && dt.DayOfYear >= bd.DayOfYear);
         }
 
-        public bool EnteredBirthdate()
+        public bool NotEnteredBirthdate()
         {
             DateTime dt = DateTime.Now;
-            return dt.Year == Birthdate.Year && dt.DayOfYear == Birthdate.DayOfYear;
-        } 
+            DateTime bd;
+            if (Birthdate == null)
+            {
+                return true;
+            }
+            else
+            {
+                bd = (DateTime)Birthdate;
+            }
+            return dt.Year == bd.Year && dt.DayOfYear == bd.DayOfYear;
+        }
 
         public override string ToString()
         {
@@ -336,6 +369,7 @@ namespace EmployeeSystem
         {
             bool fn;
             bool ln;
+            bool bd;
             if (Firstname == null)
             {
                 fn = true;
@@ -352,7 +386,14 @@ namespace EmployeeSystem
             {
                 ln = name.IsMatch(Lastname);
             }
-            bool bd = CheckAge(Birthdate) || EnteredBirthdate();
+            if (Birthdate == null)
+            {
+                bd = true;
+            }
+            else
+            {
+                bd = CheckAge() || NotEnteredBirthdate();
+            }
             bool po = Position != null && Position != "";
             bool gs = GrossSalary >= (decimal) 17300;
             return fn && ln && bd && po && gs;
@@ -360,11 +401,11 @@ namespace EmployeeSystem
 
         public override string ToString()
         {
-            if (!EnteredBirthdate())
+            if (!NotEnteredBirthdate())
             {
                 return $"{{\"Firstname\":\"{Firstname}\",\"Lastname\":\"{Lastname}\",\"Birthdate\":{Birthdate},\"Education\":\"{Education}\",\"Position\":\"{Position}\",\"GrossSalary\":{GrossSalary}}}";
             }
-            return $"{{\"Firstname\":\"{Firstname}\",\"Lastname\":\"{Lastname}\",\"Birthdate\":,\"Education\":\"{Education}\",\"Position\":\"{Position}\",\"GrossSalary\":{GrossSalary}}}";
+            return $"{{\"Firstname\":\"{Firstname}\",\"Lastname\":\"{Lastname}\",\"Birthdate\":null,\"Education\":\"{Education}\",\"Position\":\"{Position}\",\"GrossSalary\":{GrossSalary}}}";
         }
 
         public static void WriteAllEmployeesToFile()
@@ -380,7 +421,7 @@ namespace EmployeeSystem
             }
         }
 
-        public static void GetEmployeesForFile()
+        public static void GetEmployeesFromFile()
         {
             string path = @".\Employees.txt";
             using (StreamReader sr = new StreamReader(path))
@@ -395,7 +436,10 @@ namespace EmployeeSystem
             }
         }
 
-        public static string SerializeClassToJSON(Employee employee) => JsonSerializer.Serialize(employee);
+        public static string SerializeClassToJSON(Employee employee) 
+        {
+            return JsonSerializer.Serialize(employee);
+        }
 
         public static Employee CopyEmployee(Employee empl) 
         {
